@@ -1,0 +1,9 @@
+{
+    "ansible.python.interpreterPath": "/usr/bin/python3",
+    "yaml.schemas": {
+        "c:\\Users\\gfa\\.vscode\\extensions\\continue.continue-1.0.19-win32-x64\\config-yaml-schema.json": [
+            ".continue/**/*.yaml"
+        ],
+        "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json": "file:///home/faebu/repos/debian-ansible-setup/inventory.yml"
+    }
+}

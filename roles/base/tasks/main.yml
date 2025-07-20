@@ -1,0 +1,21 @@
+---
+- name: Install packages
+  ansible.builtin.include_tasks:
+    file: 01-packages.yml
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Configure SSH hardening
+  ansible.builtin.include_tasks:
+    file: 02-ssh-hardeining.yml
+
+- name: Configure date and time
+  ansible.builtin.include_tasks:
+    file: 03-date-time.yml
+
+- name: Configure user
+  ansible.builtin.include_tasks:
+    file: 04-user.yml
+
+- name: Configure miscellaneous settings
+  ansible.builtin.include_tasks:
+    file: 05-misc-settings.yml

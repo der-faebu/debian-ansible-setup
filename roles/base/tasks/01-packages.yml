@@ -1,0 +1,35 @@
+- name: Update apt cache
+  become: true
+  debugger: yes
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install essential packages
+  become: true
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - git
+      - vim
+      - htop
+      - tree
+      - unzip
+      - software-properties-common
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      - lsb-release
+      - nala
+      - tldr
+      - grub-customizer
+      - btop
+      - psmisc
+      - lshw
+      - dnsutils
+      - net-tools
+      - rsync
+      - ufw
+      - systemd-timesyncd
+    state: present

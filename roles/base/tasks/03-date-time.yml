@@ -1,0 +1,11 @@
+- name: Configure timezone
+  ansible.builtin.timezone:
+    name: "{{ system_timezone | default('UTC') }}"
+- name: Set NTP server
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/timesyncd.conf
+    regexp: '^NTP='
+    line: "NTP={{ ntp_server | default('pool.ntp.org') }}"
+    backup: true
+  notify: Restart NTP service

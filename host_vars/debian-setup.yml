@@ -1,0 +1,6 @@
+hostname: debian-setup
+username: faebu
+ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFGARAyGcqKVrW+j8rTOFw5uY8Xs5lvGzhncJR4oZduR faebu@gygax.tech"
+user_password: "$6$rounds=656000$mysecretsalt$94oTuKzy3gA.hbNLSjnfaOJlrprOggOB1YMXSvF5BPGidZYyWTwAwOnzJPOYw/VE6xFXYZI0F9g60aideqHl20"
+system_timezone: "Europe/Zurich"
+ntp_server: "pool.ntp.org"

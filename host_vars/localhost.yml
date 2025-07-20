@@ -1,0 +1,3 @@
+hostname: nb-win11
+username: faebu
+ssh_key: ~/.ssh/faebu.pub
