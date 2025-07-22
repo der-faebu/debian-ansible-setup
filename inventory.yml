@@ -6,7 +6,8 @@ all:
     #   username: "faebu"
 
     debian-setup:
-      ansible_host: 172.19.1.201
+      ansible_host: debian-setup
       ansible_user: "faebu-admin"
       ansible_python_interpreter: "/usr/bin/python3"
-      ansible_ssh_private_key_file: ~/.ssh/faebu
+      # ansible_ssh_private_key_file: ~/.ssh/faebu-admin.pub
+      

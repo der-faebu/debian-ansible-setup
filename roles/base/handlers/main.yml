@@ -1,11 +1,11 @@
 ---
-- name: Restart SSH
+- name: "Restart SSH service"
   ansible.builtin.systemd:
     name: ssh
     state: restarted
 
-- name: Restart NTP
+- name: "Restart NTP service"
   ansible.builtin.systemd:
     name: systemd-timesyncd
     state: restarted
-  when: ansible_facts['os_family'] == 'Debian'  
+  when: ansible_facts['os_family'] == 'Debian'

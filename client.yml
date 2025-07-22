@@ -1,9 +1,9 @@
 ---
 - name: Setup Debian Client
   hosts: all
-  
   roles:
-    - base
+    # - base
+    - user-customization
     # - desktop
     # - development
     # - applications

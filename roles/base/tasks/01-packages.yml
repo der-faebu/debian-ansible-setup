@@ -1,8 +1,7 @@
-- name: Update apt cache
+- name: "Update apt cache"
   become: true
-  debugger: yes
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: false
     cache_valid_time: 3600
 
 - name: Install essential packages
@@ -33,3 +32,12 @@
       - ufw
       - systemd-timesyncd
     state: present
+
+- name: "Install dev packages"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - cmake
+      - gettext
+      - build-essential
+  tags: ["client", "build"]

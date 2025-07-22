@@ -13,4 +13,4 @@
     - { regexp: '^#?AuthorizedKeysFile', line: 'AuthorizedKeysFile .ssh/authorized_keys' }
     - { regexp: '^#?PermitEmptyPasswords', line: 'PermitEmptyPasswords no' }
     - { regexp: '^#?MaxAuthTries', line: 'MaxAuthTries 3' }
-  notify: Restart SSH
+  notify: "Restart SSH service"
