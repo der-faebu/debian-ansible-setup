@@ -1,0 +1,14 @@
+---
+- name: Install dependencies
+  become: true
+  ansible.builtin.apt:
+    name:
+    - ffmpeg
+    - 7zip
+    - jq
+    - poppler-utils
+    - ripgrep
+    - fzf
+    - zoxide 
+    - imagemagick
+    state: present

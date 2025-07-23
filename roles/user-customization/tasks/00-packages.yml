@@ -1,0 +1,7 @@
+---
+
+- name: Ensure user packages are installed
+  become: true
+  ansible.builtin.apt:
+    name: "{{ user_packages }}"
+    state: present

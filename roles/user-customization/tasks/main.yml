@@ -1,9 +1,13 @@
 ---
-# - name: Install packages
-#   ansible.builtin.include_tasks:
-#     file: 01-neovim.yml
-#   tags: neovim
+- name: Install user packages
+  ansible.builtin.include_tasks:
+    file: 00-packages.yml
 
-- name: Install packages
+- name: Install neovim
+  ansible.builtin.include_tasks:
+    file: 01-neovim.yml
+  tags: neovim
+
+- name: Install dotfiles
   ansible.builtin.include_tasks:
     file: 02-dotfiles.yml
