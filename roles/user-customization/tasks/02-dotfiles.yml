@@ -1,9 +1,14 @@
 ---
+- name: "Add safe git directory" 
+  ansible.builtin.shell:
+    cmd: "git config --global --add safe.directory /home/{{ username }}/.dotfiles"
+
 - name: "Clone dotfiles repo"
   ansible.builtin.git:
     repo: 'https://github.com/der-faebu/dotfiles'
     dest: "/home/{{ username }}/.dotfiles"
     recursive: yes
+    force: yes
   remote_user: "{{ username }}"
 
 - name: "Set permissions for dotfile directory" 
@@ -14,8 +19,30 @@
     recurse: yes
     mode: "0755"
 
+- name: Ensure "stow" is installed"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - stow
+  
+# this is somewhat hacky for bashrc
 - name: "Create symlinks for dotfiles"
   ansible.builtin.shell:
-    cmd: "stow -t /home/{{ username }} -d /home/{{ username }}/.dotfiles -S {{ item }}"
+    cmd: "stow -t /home/{{ username }} -d /home/{{ username }}/.dotfiles -S {{ item }} --adopt"
   loop: "{{ dotfiles.home_dir_packages }}"
   remote_user: "{{ username }}"
+
+- name: "Git restore" 
+  ansible.builtin.shell:
+    cmd: "git restore ."
+  args: 
+    chdir: "/home/{{ username }}/.dotfiles"
+
+
+- name: "chown whole home directory recursively" 
+  ansible.builtin.file:
+    path: "/home/{{ username }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    recurse: yes
+    mode: "0755"
