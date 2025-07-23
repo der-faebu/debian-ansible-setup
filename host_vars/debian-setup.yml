@@ -7,3 +7,18 @@ ntp_server: "pool.ntp.org"
 nvim:
   bin_path: "/opt/neovim"
   repo_path: "/opt/repos/neovim"
+dotfiles:
+  repo: "https://github.com/der-faebu/dotfiles "
+  home_dir_packages:
+    - "nvim"
+    - "bash"
+    - "zsh"
+    - "neofetch"
+    - "tmux"
+    - "i3"
+    - "kitty"
+    - "nushell"
+    - "poshthemes"
+    - "yazi"
+    - "htop"
+  etc_dir_packages:
