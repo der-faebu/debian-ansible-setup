@@ -16,3 +16,8 @@
     cmd: make install
     chdir: "{{ nvim.repo_path }}"
     creates: "{{ nvim.repo_path }}/build"
+
+- name: "Move Neovim binary to the specified path"
+  ansible.builtin.command:
+    cmd: mv {{ nvim.repo_path}}/nvim {{ nvim.bin_path }}
+    creates: "{{ nvim.bin_path }}/nvim"

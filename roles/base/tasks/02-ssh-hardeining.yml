@@ -1,11 +1,11 @@
+---
 - name: Configure SSH hardening
   become: true
-
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    backup: yes
+    backup: true
   loop:
     - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
     - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin no' }

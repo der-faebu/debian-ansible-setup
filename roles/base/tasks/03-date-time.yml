@@ -1,6 +1,8 @@
-- name: Configure timezone
-  ansible.builtin.timezone:
+---
+- name: "Configure timezone"
+  community.general.timezone:
     name: "{{ system_timezone | default('UTC') }}"
+
 - name: Set NTP server
   become: true
   ansible.builtin.lineinfile:

@@ -9,19 +9,17 @@ ntp_server: "pool.ntp.org"
 ### Custom configuration ###
 ## Neovim configuration
 nvim:
-  bin_path: "/opt/neovim"
+  bin_path: "/usr/local/bin"
   repo_path: "/opt/repos/neovim"
 
 ## Packages to install for the user
 user_packages:
   - "stow"
   - "tmux"
-  - "neofetch"
+  - "hyfetch"
   - "htop"
   - "i3"
   - "kitty"
-  - "nushell"
-  - "poshthemes"
   - "zsh"
 
 ## Dotfiles configuration 
@@ -35,8 +33,12 @@ dotfiles:
     - "tmux"
     - "i3"
     - "kitty"
-    - "nushell"
-    - "poshthemes"
-    - "yazi"
     - "htop"
   etc_dir_packages:
+
+## Fonts
+fonts:
+- name: "Atkynson Mono Nerd Font Mono"
+  url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/AtkinsonHyperlegibleMono.zip"
+- name: "Monofur Nerd Font"
+  url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Monofur.zip"

@@ -6,8 +6,11 @@
 - name: Install neovim
   ansible.builtin.include_tasks:
     file: 01-neovim.yml
-  tags: neovim
 
 - name: Install dotfiles
   ansible.builtin.include_tasks:
     file: 02-dotfiles.yml
+
+- name: Install yazi
+  ansible.builtin.include_tasks:
+    file: 03-yazi.yml

@@ -3,12 +3,84 @@
   become: true
   ansible.builtin.apt:
     name:
-    - ffmpeg
-    - 7zip
-    - jq
-    - poppler-utils
-    - ripgrep
-    - fzf
-    - zoxide 
-    - imagemagick
+      - file
+      - rustup
+      - 7zip
+      - jq
+      - fd-find
+      - ripgrep
+      - resvg
+      - xclip
+      - xsel
+      - wl-clipboard
+      - poppler-utils
+      - ripgrep
+      - fzf
+      - zoxide
+      - imagemagick
+      - ffmpeg
     state: present
+
+- name: "Ensure Rust version"
+  become: true
+  become_user: "{{ username }}"
+  become_method: su
+  ansible.builtin.command:
+    cmd: "rustup default stable"
+  args:
+    creates: "/home/{{ username }}/.cargo/bin/rustc"
+
+- name: "Ensure fonts directory"
+  become: true
+  become_user: "{{ username }}"
+  become_method: su
+  ansible.builtin.file:
+    path: "/home/{{ username }}/.fonts"
+    state: directory
+    mode: '0755'
+
+- name: "Download Nerd Fonts"
+  become: true
+  become_user: "{{ username }}"
+  become_method: su
+  ansible.builtin.unarchive:
+    src: "{{ item.url }}"
+    dest: "/home/{{ username }}/.fonts"
+    remote_src: true
+  loop: "{{ fonts }}"
+
+- name: "Clone yazi git repository" # noqa: latest
+  become: true
+  become_user: "{{ username }}"
+  become_method: su
+  ansible.builtin.git:
+    repo: "https://github.com/sxyazi/yazi.git"
+    dest: "/home/{{ username }}/yazi"
+
+
+- name: "Test if yazi is already installed"
+  become: true
+  ansible.builtin.command:
+    cmd: "yazi --version"
+  register: yazi_installed
+  changed_when: false
+  failed_when: false
+
+- name: "Install yazi"
+  become: true
+  become_user: "{{ username }}"
+  become_method: su
+  ansible.builtin.command:
+    cmd: "cargo build --release --locked"
+    chdir: "/home/{{ username }}/yazi"
+  args:
+    creates: "/home/{{ username }}/.local/bin/yazi"
+  when: yazi_installed is failed or yazi_installed.rc != 0
+
+- name: "Move to destination"
+  become: true
+  ansible.builtin.command:
+    cmd: "mv /home/{{ username }}/yazi/target/release/yazi /usr/local/bin"
+  args:
+    creates: "/usr/local/bin/yazi"
+  when: yazi_installed is failed or yazi_installed.rc != 0

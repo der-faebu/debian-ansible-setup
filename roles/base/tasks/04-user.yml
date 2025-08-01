@@ -1,13 +1,14 @@
+---
 - name: "Create user account '{{ username }}'"
   ansible.builtin.user:
     name: "{{ username }}"
     groups: sudo
     shell: /bin/bash
-    create_home: yes
+    create_home: true
     password: "{{ user_password }}"
   when: username is defined
 
-- name: "Create .ssh directories for user '{{ username }}'" 
+- name: "Create .ssh directories for user '{{ username }}'"
   ansible.builtin.file:
     path: "/home/{{ username }}/.ssh"
     state: directory
@@ -16,7 +17,7 @@
     mode: '0700'
 
 - name: Add SSH public keys for user '{{ username }}'
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ username }}"
     state: present
     key: "{{ ssh_key }}"

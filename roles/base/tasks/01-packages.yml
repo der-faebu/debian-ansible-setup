@@ -1,3 +1,8 @@
+---
+- name: "Print ansible facts"
+  ansible.builtin.debug:
+    var: ansible_facts
+
 - name: "Update apt cache"
   become: true
   ansible.builtin.apt:
@@ -15,7 +20,6 @@
       - htop
       - tree
       - unzip
-      - software-properties-common
       - apt-transport-https
       - ca-certificates
       - gnupg
@@ -40,4 +44,3 @@
       - cmake
       - gettext
       - build-essential
-  tags: ["client", "build"]
