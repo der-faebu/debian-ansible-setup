@@ -1,23 +1,34 @@
 ---
+- name: "Test if nvim is installed"
+  ansible.builtin.command:
+    cmd: "{{ nvim.bin_path }}/nvim --version"
+  register: nvim_installed
+  changed_when: false
+  failed_when: false
+
 - name: "Clone nvim repo"
   ansible.builtin.git:
-    repo: 'https://github.com/neovim/neovim'
+    repo: "https://github.com/neovim/neovim"
     version: release-0.10
     dest: "{{ nvim.repo_path }}"
+  when: nvim_installed is failed or nvim_installed.rc != 0
 
 - name: "Build project with CMake (Release mode)"
   ansible.builtin.command:
     cmd: make CMAKE_BUILD_TYPE=Release
     chdir: "{{ nvim.repo_path }}"
     creates: "{{ nvim.repo_path }}/build"
+  when: nvim_installed is failed or nvim_installed.rc != 0
 
 - name: "Install the built project"
   ansible.builtin.command:
     cmd: make install
     chdir: "{{ nvim.repo_path }}"
     creates: "{{ nvim.repo_path }}/build"
+  when: nvim_installed is failed or nvim_installed.rc != 0
 
 - name: "Move Neovim binary to the specified path"
   ansible.builtin.command:
-    cmd: mv {{ nvim.repo_path}}/nvim {{ nvim.bin_path }}
+    cmd: mv {{ nvim.repo_path}}/build/bin/nvim {{ nvim.bin_path }}
     creates: "{{ nvim.bin_path }}/nvim"
+  when: nvim_installed is failed or nvim_installed.rc != 0
