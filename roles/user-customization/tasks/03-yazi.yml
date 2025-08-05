@@ -1,15 +1,38 @@
 ---
+- name: Test if  yazi is already installed
+  ansible.builtin.command:
+    cmd: "yazi --version"
+  register: yazi_installed
+  changed_when: false
+  failed_when: false
+
+- name: Debug output for yazi installation
+  ansible.builtin.debug:
+    msg: "{{ yazi_installed }}"
+  when: yazi_installed is succeeded and yazi_installed.rc == 0
+
+
+- name: Check if cargo is installed
+  ansible.builtin.command: 
+    cmd: "/home/{{ username }}/.cargo/bin/cargo --version"
+  register: cargo_exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Debug output for cargo installation failure
+  ansible.builtin.debug:
+    msg: "{{ cargo_exists }}"
+
 - name: Install dependencies
   become: true
   ansible.builtin.apt:
     name:
       - file
-      - rustup
       - 7zip
       - jq
       - fd-find
       - ripgrep
-      - resvg
+      # - resvg
       - xclip
       - xsel
       - wl-clipboard
@@ -20,15 +43,34 @@
       - imagemagick
       - ffmpeg
     state: present
+  when:
+    - cargo_exists is failed or cargo_exists.rc != 0
+    - yazi_installed is failed or yazi_installed.rc != 0
 
-- name: "Ensure Rust version"
+- name: Download Installer
+  when:
+    - cargo_exists is failed or cargo_exists.rc != 0
+    - yazi_installed is failed or yazi_installed.rc != 0
+  ansible.builtin.get_url:
+    url: https://sh.rustup.rs
+    dest: /tmp/sh.rustup.rs
+    mode: '0755'
+    force: 'yes'
   become: true
   become_user: "{{ username }}"
   become_method: su
+
+- name: Install Rust
+  when:
+    - cargo_exists is failed or cargo_exists.rc != 0
+    - yazi_installed is failed or yazi_installed.rc != 0
   ansible.builtin.command:
-    cmd: "rustup default stable"
+    cmd: "/tmp/sh.rustup.rs -y --no-modify-path"
   args:
-    creates: "/home/{{ username }}/.cargo/bin/rustc"
+    creates: "/home/{{ username }}/.cargo/bin/cargo"
+  become: true
+  become_user: "{{ username }}"
+  become_method: su
 
 - name: "Ensure fonts directory"
   become: true
@@ -56,26 +98,22 @@
   ansible.builtin.git:
     repo: "https://github.com/sxyazi/yazi.git"
     dest: "/home/{{ username }}/yazi"
+  when:
+    - cargo_exists is failed or cargo_exists.rc != 0
+    - yazi_installed is failed or yazi_installed.rc != 0
 
-
-- name: "Test if yazi is already installed"
-  become: true
-  ansible.builtin.command:
-    cmd: "yazi --version"
-  register: yazi_installed
-  changed_when: false
-  failed_when: false
-
-- name: "Install yazi"
+- name: "Build yazi"
   become: true
   become_user: "{{ username }}"
   become_method: su
   ansible.builtin.command:
-    cmd: "cargo build --release --locked"
+    cmd: "/home/{{ username }}/.cargo/bin/cargo build --release --locked"
     chdir: "/home/{{ username }}/yazi"
   args:
     creates: "/home/{{ username }}/.local/bin/yazi"
-  when: yazi_installed is failed or yazi_installed.rc != 0
+  when:
+    - cargo_exists is failed or cargo_exists.rc != 0
+    - yazi_installed is failed or yazi_installed.rc != 0
 
 - name: "Move to destination"
   become: true
@@ -83,4 +121,6 @@
     cmd: "mv /home/{{ username }}/yazi/target/release/yazi /usr/local/bin"
   args:
     creates: "/usr/local/bin/yazi"
-  when: yazi_installed is failed or yazi_installed.rc != 0
+  when:
+    - cargo_exists is failed or cargo_exists.rc != 0
+    - yazi_installed is failed or yazi_installed.rc != 0
