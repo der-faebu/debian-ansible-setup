@@ -5,9 +5,9 @@ all:
     #   ansible_python_interpreter: "{{ ansible_playbook_python }}"
     #   username: "faebu"
 
-    debian-setup:
-      ansible_host: debian-setup
-      ansible_user: "faebu-admin"
+    nbgfa:
+      ansible_host: nbgfa
+      ansible_user: "gfa"
       ansible_python_interpreter: "/usr/bin/python3"
       # ansible_ssh_private_key_file: ~/.ssh/faebu-admin.pub
       
