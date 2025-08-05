@@ -1,8 +1,8 @@
 ---
-- name: Upgrade to Trixie
-  ansible.builtin.include_tasks:
-    file: 00-upgrade-trixie.yml
-  when: ansible_facts['os_family'] == 'Debian' and ansible_facts['major_release'] == '12'
+# - name: Upgrade to Trixie
+#   ansible.builtin.include_tasks:
+#     file: 00-upgrade-trixie.yml
+#   when: ansible_facts['os_family'] == 'Debian' and ansible_facts['major_release'] == '12' and {{ upgrade_to_trixie }}
 
 - name: Install packages
   ansible.builtin.include_tasks:
