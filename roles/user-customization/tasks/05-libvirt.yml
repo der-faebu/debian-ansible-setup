@@ -1,0 +1,13 @@
+- name: "Install required packages"
+  ansible.builtin.apt:
+    name:
+      - "qemu-kvm"
+      - "libvirt-daemon-system"
+      - "virt-manager"
+    state: present
+
+- name: "Ensure user is in libvirt group"
+  ansible.builtin.user:
+    name: "{{ username }}"
+    groups: libvirt
+    append: true
