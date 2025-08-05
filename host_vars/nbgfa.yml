@@ -1,0 +1,60 @@
+### Basic configuraiton ###
+hostname: debian-setup
+username: gfa
+ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFGARAyGcqKVrW+j8rTOFw5uY8Xs5lvGzhncJR4oZduR faebu@gygax.tech"
+user_password: "$6$rounds=656000$mysecretsalt$94oTuKzy3gA.hbNLSjnfaOJlrprOggOB1YMXSvF5BPGidZYyWTwAwOnzJPOYw/VE6xFXYZI0F9g60aideqHl20"
+system_timezone: "Europe/Zurich"
+ntp_server: "pool.ntp.org"
+upgrade_to_trixie: false
+
+### Custom configuration ###
+## Neovim configuration
+nvim:
+  bin_path: "/usr/local/bin"
+  repo_path: "/opt/repos/neovim"
+
+## Packages to install for the user
+user_packages:
+  - "stow"
+  - "tmux"
+  - "screenfetch"
+  - "htop"
+  - "i3"
+  - "kitty"
+  - "zsh"
+
+## Dotfiles configuration
+dotfiles:
+  repo: "https://github.com/der-faebu/dotfiles "
+  home_dir_packages:
+    - "nvim"
+    - "bash"
+    - "zsh"
+    - "neofetch"
+    - "tmux"
+    - "i3"
+    - "kitty"
+    - "htop"
+  etc_dir_packages:
+
+## Flatpaks
+flatpaks:
+  flatpak_repos:
+    - name: "flathub"
+      url: "https://flathub.org/repo/flathub.flatpakrepo"
+      paks:
+        - "org.mozilla.firefox"
+        - "org.videolan.VLC"
+        - "md.obsidian.Obsidian"
+        - "com.usebottles.bottles"
+        - "com.rustdesk.RustDesk"
+        - "com.usebruno.Bruno"
+        - "com.visualstudio.code"
+        - "net.devolutions.RDM"
+        - "org.libreoffice.LibreOffice"
+## Fonts
+fonts:
+  - name: "Atkynson Mono Nerd Font Mono"
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/AtkinsonHyperlegibleMono.zip"
+  - name: "Monofur Nerd Font"
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/Monofur.zip"
