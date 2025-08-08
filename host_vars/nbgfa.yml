@@ -42,6 +42,7 @@ flatpaks:
   flatpak_repos:
     - name: "flathub"
       url: "https://flathub.org/repo/flathub.flatpakrepo"
+      method: 'system'
       paks:
         - "org.mozilla.firefox"
         - "org.videolan.VLC"

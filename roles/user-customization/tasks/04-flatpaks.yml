@@ -13,5 +13,5 @@
     name: "{{ item.paks }}"
     state: present
     remote: "{{ item.name }}"
-    method: user
+    method: "{{ item.method }}"
   loop: "{{ flatpaks.flatpak_repos }}"
