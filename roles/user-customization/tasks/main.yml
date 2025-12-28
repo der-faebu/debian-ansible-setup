@@ -20,11 +20,17 @@
 - name: Install yazi
   ansible.builtin.include_tasks:
     file: 03-yazi.yml
+  tags:
+    - user-customisation
 
 - name: Install flatpaks
   ansible.builtin.include_tasks:
     file: 04-flatpaks.yml
+  tags:
+    - user-customisation
 
 - name: Install libvirt
   ansible.builtin.include_tasks:
     file: 05-libvirt.yml
+  tags:
+    - user-customisation
