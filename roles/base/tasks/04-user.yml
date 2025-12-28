@@ -5,8 +5,11 @@
     groups: sudo
     shell: /bin/bash
     create_home: true
+    uid: "{{ uid | default(omit) }}"
     password: "{{ user_password }}"
   when: username is defined
+  tags: 
+    - users
 
 - name: "Create .ssh directories for user '{{ username }}'"
   ansible.builtin.file:
@@ -15,6 +18,8 @@
     owner: "{{ username }}"
     group: "{{ username }}"
     mode: '0700'
+  tags: 
+    - users
 
 - name: Add SSH public keys for user '{{ username }}'
   ansible.posix.authorized_key:
@@ -23,3 +28,5 @@
     key: "{{ ssh_key }}"
     comment: "{{ comment | default('Managed by Ansible') }}"
   when: ssh_key is defined
+  tags: 
+    - users

@@ -2,6 +2,8 @@
 - name: "Configure timezone"
   community.general.timezone:
     name: "{{ system_timezone | default('UTC') }}"
+  tags:
+    - settings
 
 - name: Set NTP server
   become: true
@@ -11,3 +13,5 @@
     line: "NTP={{ ntp_server | default('pool.ntp.org') }}"
     backup: true
   notify: Restart NTP service
+  tags:
+    - settings

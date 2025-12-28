@@ -2,14 +2,20 @@
 - name: Install user packages
   ansible.builtin.include_tasks:
     file: 00-packages.yml
+  tags:
+    - user-customisation
 
 - name: Install neovim
   ansible.builtin.include_tasks:
     file: 01-neovim.yml
+  tags:
+    - user-customisation
 
 - name: Install dotfiles
   ansible.builtin.include_tasks:
     file: 02-dotfiles.yml
+  tags:
+    - user-customisation
 
 - name: Install yazi
   ansible.builtin.include_tasks:

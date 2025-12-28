@@ -9,6 +9,8 @@
   become: true
   become_user: "{{ username }}"
   become_method: su
+  tags:
+    - user-customisation
 
 # this is somewhat hacky for bashrc
 - name: "Create symlinks for dotfiles"
@@ -20,6 +22,8 @@
   loop: "{{ dotfiles.home_dir_packages }}"
   register: stow_out
   changed_when: stow_out != 0
+  tags:
+    - user-customisation
 
 - name: "Git restore"
   become: true
@@ -30,3 +34,5 @@
   args:
     chdir: "/home/{{ username }}/.dotfiles"
   changed_when: false
+  tags:
+    - user-customisation

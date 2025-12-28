@@ -7,7 +7,11 @@ all:
 
     nbgfa:
       ansible_host: nbgfa
-      ansible_user: "gfa"
+      ansible_user: gfa
       ansible_python_interpreter: "/usr/bin/python3"
       # ansible_ssh_private_key_file: ~/.ssh/faebu-admin.pub
-      
+
+    faebu-pc: 
+      ansible_host: faebu-pc.q.gygax.tech
+      ansible_user: faebu-admin      
+      ansible_python_interpreter: "/usr/bin/python3"

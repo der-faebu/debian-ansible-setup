@@ -6,9 +6,13 @@
     line: "127.0.0.1 {{ hostname }}"
     state: present
   when: hostname is defined
+  tags:
+    - settings
 
 - name: Set hostname
   become: true
   ansible.builtin.hostname:
     name: "{{ hostname }}"
   when: hostname is defined
+  tags:
+    - settings

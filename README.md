@@ -1,10 +1,10 @@
 Local development environment setup:
 ```
-sudo apt install -y uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 uv venv
 source .venv/bin/activate
 uv pip install ansible
-up pip install passlib # for creating password hashes
+uv pip install passlib # for creating password hashes
 ```
 
 Remote machine setup

@@ -1,6 +1,7 @@
 ### Basic configuraiton ###
-hostname: debian-setup
+hostname: faebu-pc
 username: faebu
+uid: 1027
 ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFGARAyGcqKVrW+j8rTOFw5uY8Xs5lvGzhncJR4oZduR faebu@gygax.tech"
 user_password: "$6$rounds=656000$mysecretsalt$94oTuKzy3gA.hbNLSjnfaOJlrprOggOB1YMXSvF5BPGidZYyWTwAwOnzJPOYw/VE6xFXYZI0F9g60aideqHl20"
 system_timezone: "Europe/Zurich"
@@ -17,10 +18,9 @@ user_packages:
   - "stow"
   - "tmux"
   - "hyfetch"
-  - "htop"
+  - "btop"
   - "i3"
   - "kitty"
-  - "zsh"
 
 ## Dotfiles configuration 
 dotfiles:
@@ -28,13 +28,12 @@ dotfiles:
   home_dir_packages:
     - "nvim"
     - "bash"
-    - "zsh"
     - "neofetch"
     - "tmux"
     - "i3"
     - "kitty"
     - "htop"
-  etc_dir_packages:
+  etc_dir_packages: []
 
 ## Fonts
 fonts:

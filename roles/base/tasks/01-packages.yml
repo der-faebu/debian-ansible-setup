@@ -2,12 +2,16 @@
 - name: "Print ansible facts"
   ansible.builtin.debug:
     var: ansible_facts
+  tags:
+    - packages
 
 - name: "Update apt cache"
   become: true
   ansible.builtin.apt:
     update_cache: false
     cache_valid_time: 3600
+  tags:
+    - packages
 
 - name: Install essential packages
   become: true
@@ -25,7 +29,7 @@
       - gnupg
       - lsb-release
       - nala
-      - tldr
+      - tealdeer
       - grub-customizer
       - btop
       - psmisc
@@ -34,8 +38,11 @@
       - net-tools
       - rsync
       - ufw
+      - nfs-common
       - systemd-timesyncd
     state: present
+  tags:
+    - packages
 
 - name: "Install dev packages"
   become: true
@@ -44,3 +51,6 @@
       - cmake
       - gettext
       - build-essential
+  tags:
+    - packages
+

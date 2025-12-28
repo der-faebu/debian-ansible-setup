@@ -43,19 +43,10 @@
       - imagemagick
       - ffmpeg
     state: present
-  when:
-    - cargo_exists is failed or cargo_exists.rc != 0
-    - yazi_installed is failed or yazi_installed.rc != 0
+  tags:
+    - user-customisation
 
-- name: Download Installer
-  when:
-    - cargo_exists is failed or cargo_exists.rc != 0
-    - yazi_installed is failed or yazi_installed.rc != 0
-  ansible.builtin.get_url:
-    url: https://sh.rustup.rs
-    dest: /tmp/sh.rustup.rs
-    mode: '0755'
-    force: 'yes'
+- name: "Ensure Rust version"
   become: true
   become_user: "{{ username }}"
   become_method: su
@@ -67,10 +58,9 @@
   ansible.builtin.command:
     cmd: "/tmp/sh.rustup.rs -y --no-modify-path"
   args:
-    creates: "/home/{{ username }}/.cargo/bin/cargo"
-  become: true
-  become_user: "{{ username }}"
-  become_method: su
+    creates: "/home/{{ username }}/.cargo/bin/rustc"
+  tags:
+    - user-customisation
 
 - name: "Ensure fonts directory"
   become: true
@@ -80,6 +70,8 @@
     path: "/home/{{ username }}/.fonts"
     state: directory
     mode: '0755'
+  tags:
+    - user-customisation
 
 - name: "Download Nerd Fonts"
   become: true
@@ -90,6 +82,8 @@
     dest: "/home/{{ username }}/.fonts"
     remote_src: true
   loop: "{{ fonts }}"
+  tags:
+    - user-customisation
 
 - name: "Clone yazi git repository" # noqa: latest
   become: true
@@ -98,11 +92,20 @@
   ansible.builtin.git:
     repo: "https://github.com/sxyazi/yazi.git"
     dest: "/home/{{ username }}/yazi"
-  when:
-    - cargo_exists is failed or cargo_exists.rc != 0
-    - yazi_installed is failed or yazi_installed.rc != 0
+  tags:
+    - user-customisation
 
-- name: "Build yazi"
+- name: "Test if yazi is already installed"
+  become: true
+  ansible.builtin.command:
+    cmd: "yazi --version"
+  register: yazi_installed
+  changed_when: false
+  failed_when: false
+  tags:
+    - user-customisation
+
+- name: "Install yazi"
   become: true
   become_user: "{{ username }}"
   become_method: su
@@ -111,9 +114,9 @@
     chdir: "/home/{{ username }}/yazi"
   args:
     creates: "/home/{{ username }}/.local/bin/yazi"
-  when:
-    - cargo_exists is failed or cargo_exists.rc != 0
-    - yazi_installed is failed or yazi_installed.rc != 0
+  when: yazi_installed is failed or yazi_installed.rc != 0
+  tags:
+    - user-customisation
 
 - name: "Move to destination"
   become: true
@@ -121,6 +124,6 @@
     cmd: "mv /home/{{ username }}/yazi/target/release/yazi /usr/local/bin"
   args:
     creates: "/usr/local/bin/yazi"
-  when:
-    - cargo_exists is failed or cargo_exists.rc != 0
-    - yazi_installed is failed or yazi_installed.rc != 0
+  when: yazi_installed is failed or yazi_installed.rc != 0
+  tags:
+    - user-customisation

@@ -1,26 +1,36 @@
 ---
-# - name: Upgrade to Trixie
-#   ansible.builtin.include_tasks:
-#     file: 00-upgrade-trixie.yml
-#   when: ansible_facts['os_family'] == 'Debian' and ansible_facts['major_release'] == '12' and {{ upgrade_to_trixie }}
+- name: Upgrade to Trixie
+  ansible.builtin.include_tasks:
+    file: 00-upgrade-trixie.yml
+  when: ansible_facts['os_family'] == 'Debian' and ansible_facts['distribution_major_version'] == '12'
 
 - name: Install packages
   ansible.builtin.include_tasks:
     file: 01-packages.yml
   when: ansible_facts['os_family'] == 'Debian'
+  tags:
+    - packages
 
 - name: Configure SSH hardening
   ansible.builtin.include_tasks:
     file: 02-ssh-hardeining.yml
+  tags:
+    - ssh
 
 - name: Configure date and time
   ansible.builtin.include_tasks:
     file: 03-date-time.yml
+  tags:
+    - settings
 
 - name: Configure user
   ansible.builtin.include_tasks:
     file: 04-user.yml
+  tags:
+    - users
 
 - name: Configure miscellaneous settings
   ansible.builtin.include_tasks:
     file: 05-misc-settings.yml
+  tags:
+    - settings
